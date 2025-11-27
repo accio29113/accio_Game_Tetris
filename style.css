@@ -45,6 +45,20 @@ h1 {
   margin-bottom: 10px;
 }
 
+/* スコア表示 */
+#score {
+  margin: 6px 0 10px;
+  font-weight: bold;
+  color: #ff6fa8;
+  text-shadow: 0 1px 3px rgba(255, 182, 193, 0.7);
+}
+
+/* 回転ボタンだけ少し強調 */
+#rotate {
+  background: #ffc9e0;
+}
+
+
 /* ゲーム枠 */
 #game {
   display: inline-block;
@@ -149,4 +163,5 @@ h1 {
     height: 20px;
   }
 }
+
 
