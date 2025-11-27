@@ -17,7 +17,7 @@ body {
   text-align: center;
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #ffe4f1, #e5f0ff);
+  background: linear-gradient(135deg, #ffe6f7, #e0f3ff);
 }
 
 /* 真ん中にカードっぽくまとめる */
@@ -72,28 +72,26 @@ h1 {
 /* 盤面（10×20） */
 #board {
   display: grid;
-  grid-template-columns: repeat(10, 22px);
-  grid-auto-rows: 22px;
+  grid-template-columns: repeat(10, 20px);
+  grid-template-rows: repeat(20, 20px);
   gap: 2px;
-  background: #f3e4ff;
-  padding: 6px;
-  border-radius: 10px;
+  margin: 0 auto;
 }
 
-/* マス */
 .cell {
-  width: 22px;
-  height: 22px;
-  background: #f9f9ff;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 4px;
-  box-sizing: border-box;
 }
 
-/* ブロックがあるマス（パステルカラー） */
-.cell.filled {
-  background: #ff9ecb;
-  box-shadow: 0 0 6px rgba(255, 158, 203, 0.7);
+/* ブロック（filled）が乗ってるときの色 */
+.filled {
+  background: #ffb6da; /* とりあえずピンク基調に */
+  box-shadow: 0 0 6px rgba(255, 182, 218, 0.8);
+  border-radius: 6px;
 }
+
 
 /* 上のスタート/ストップボタン */
 #top-controls {
@@ -163,5 +161,6 @@ h1 {
     height: 20px;
   }
 }
+
 
 
