@@ -1,7 +1,42 @@
-// スマホのダブルタップや連打で画面が動くのを防ぐ
-document.addEventListener("touchmove", function (e) {
-  e.preventDefault();
-}, { passive: false });
+// ===== iPhone向け ズーム・スクロール完全対策 =====
+
+// ダブルタップズーム（iOS Safari）対策
+let lastTouchEnd = 0;
+document.addEventListener(
+  "touchend",
+  function (e) {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+      // 300ms以内に2回タップ → ズームさせない
+      e.preventDefault();
+    }
+    lastTouchEnd = now;
+  },
+  { passive: false }
+);
+
+// ピンチイン・ピンチアウト（2本指ズーム）対策
+document.addEventListener(
+  "gesturestart",
+  function (e) {
+    e.preventDefault();
+  },
+  { passive: false }
+);
+
+// スクロールで画面が動くのも防ぐ
+document.addEventListener(
+  "touchmove",
+  function (e) {
+    e.preventDefault();
+  },
+  { passive: false }
+);
+
+// ===== 基本設定 =====
+const COLS = 10;
+const ROWS = 20;
+
 
 // ===== 基本設定 =====
 const COLS = 10;
@@ -286,4 +321,5 @@ draw();
 // ボタンにイベントをつなぐ
 startBtn.addEventListener("click", startGame);
 stopBtn.addEventListener("click", stopGame);
+
 
