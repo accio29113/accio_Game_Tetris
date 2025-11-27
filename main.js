@@ -1,3 +1,8 @@
+// スマホのダブルタップや連打で画面が動くのを防ぐ
+document.addEventListener("touchmove", function (e) {
+  e.preventDefault();
+}, { passive: false });
+
 // ===== 基本設定 =====
 const COLS = 10;
 const ROWS = 20;
@@ -281,3 +286,4 @@ draw();
 // ボタンにイベントをつなぐ
 startBtn.addEventListener("click", startGame);
 stopBtn.addEventListener("click", stopGame);
+
