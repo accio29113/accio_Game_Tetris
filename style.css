@@ -1,0 +1,138 @@
+/* 全体の雰囲気 */
+body {
+  font-family: "Yu Gothic", system-ui, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #ffe4f1, #e5f0ff);
+}
+
+/* 真ん中にカードっぽくまとめる */
+.wrapper {
+  max-width: 480px;
+  margin: 20px auto;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* タイトルを可愛く */
+h1 {
+  margin-top: 0;
+  color: #ff6fa8;
+  text-shadow: 0 2px 4px rgba(255, 182, 193, 0.7);
+  font-size: 1.6rem;
+}
+
+/* 説明テキスト */
+.hint {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+/* ゲーム枠 */
+#game {
+  display: inline-block;
+  padding: 10px;
+  background: #fff;
+  border-radius: 16px;
+  border: 2px solid #ffb6c1;
+  box-shadow: 0 4px 10px rgba(255, 182, 193, 0.5);
+}
+
+/* 盤面（10×20） */
+#board {
+  display: grid;
+  grid-template-columns: repeat(10, 22px);
+  grid-auto-rows: 22px;
+  gap: 2px;
+  background: #f3e4ff;
+  padding: 6px;
+  border-radius: 10px;
+}
+
+/* マス */
+.cell {
+  width: 22px;
+  height: 22px;
+  background: #f9f9ff;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* ブロックがあるマス（パステルカラー） */
+.cell.filled {
+  background: #ff9ecb;
+  box-shadow: 0 0 6px rgba(255, 158, 203, 0.7);
+}
+
+/* 上のスタート/ストップボタン */
+#top-controls {
+  margin-bottom: 8px;
+}
+
+#top-controls button {
+  font-size: 0.95rem;
+  padding: 8px 18px;
+  margin: 4px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: #ffb6c9;
+  color: #fff;
+  box-shadow: 0 3px 6px rgba(255, 182, 193, 0.7);
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
+}
+
+#top-controls button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(255, 182, 193, 0.9);
+}
+
+#top-controls button:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(255, 182, 193, 0.7);
+}
+
+/* 下の操作ボタン（スマホ向け） */
+#controls {
+  margin-top: 12px;
+}
+
+#controls button {
+  font-size: 1.4rem;
+  padding: 10px 18px;
+  margin: 4px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  background: #e4e0ff;
+  color: #555;
+  box-shadow: 0 3px 6px rgba(150, 150, 200, 0.5);
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
+}
+
+#controls button:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(150, 150, 200, 0.5);
+}
+
+/* スマホで見たときの余白調整 */
+@media (max-width: 480px) {
+  .wrapper {
+    margin: 10px;
+    padding: 12px;
+  }
+
+  #board {
+    grid-template-columns: repeat(10, 20px);
+    grid-auto-rows: 20px;
+  }
+
+  .cell {
+    width: 20px;
+    height: 20px;
+  }
+}
