@@ -15,7 +15,7 @@ document.addEventListener(
   { passive: false }
 );
 
-// ピンチイン・ピンチアウト（2本指ズーム）対策
+// ピンチズーム（2本指）対策
 document.addEventListener(
   "gesturestart",
   function (e) {
@@ -24,7 +24,7 @@ document.addEventListener(
   { passive: false }
 );
 
-// スクロールで画面が動くのも防ぐ
+// スクロールで画面が動くのを防ぐ
 document.addEventListener(
   "touchmove",
   function (e) {
@@ -32,11 +32,6 @@ document.addEventListener(
   },
   { passive: false }
 );
-
-// ===== 基本設定 =====
-const COLS = 10;
-const ROWS = 20;
-
 
 // ===== 基本設定 =====
 const COLS = 10;
@@ -117,14 +112,13 @@ function initBoard() {
     }
     board.push(row);
   }
-  current = null; // 新しくスタートしたら現在のブロックはリセット
+  current = null;
 }
 
 // ===== 描画 =====
 function draw() {
   boardElem.innerHTML = "";
 
-  // 盤面 + 現在のブロックを合成した状態で描画する用のコピー
   const temp = board.map(row => [...row]);
 
   if (current) {
@@ -141,7 +135,6 @@ function draw() {
     }
   }
 
-  // DOMとして描画
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
       const cell = document.createElement("div");
@@ -164,11 +157,9 @@ function collide(nx, ny) {
         const bx = nx + x;
         const by = ny + y;
 
-        // 盤面外
         if (bx < 0 || bx >= COLS || by >= ROWS) {
           return true;
         }
-        // すでに埋まっているマス
         if (by >= 0 && board[by][bx] === 1) {
           return true;
         }
@@ -198,17 +189,15 @@ function merge() {
 // ===== ライン消し =====
 function clearLines() {
   let newBoard = [];
-  let cleared = 0;
 
   for (let y = 0; y < ROWS; y++) {
     if (board[y].every(cell => cell === 1)) {
-      cleared++;
+      // そろった行は捨てる
     } else {
       newBoard.push(board[y]);
     }
   }
 
-  // 消した行数だけ上から空行を追加
   while (newBoard.length < ROWS) {
     const empty = new Array(COLS).fill(0);
     newBoard.unshift(empty);
@@ -229,7 +218,6 @@ function stopGame() {
 function newPiece() {
   current = createPiece();
 
-  // いきなり詰んでたらゲームオーバー
   if (collide(current.x, current.y)) {
     alert("ゲームオーバー！");
     stopGame();
@@ -248,7 +236,6 @@ function drop() {
   if (!collide(current.x, ny)) {
     current.y = ny;
   } else {
-    // ぶつかったので固定
     merge();
     clearLines();
     newPiece();
@@ -260,12 +247,11 @@ function drop() {
 function startGame() {
   if (gameRunning) return;
 
-  // まだブロックがないときは作る
   if (!current) {
     newPiece();
   }
 
-  intervalId = setInterval(drop, 600); // 0.6秒ごとに1マス落下
+  intervalId = setInterval(drop, 600);
   gameRunning = true;
 }
 
@@ -285,7 +271,7 @@ document.addEventListener("keydown", (e) => {
     }
   } else if (e.key === "ArrowDown") {
     drop();
-    return; // 二重描画防止
+    return;
   }
   draw();
 });
@@ -314,12 +300,9 @@ downBtn.addEventListener("click", () => {
   drop();
 });
 
-// ===== 最初の準備 =====
+// ===== 初期化 =====
 initBoard();
 draw();
 
-// ボタンにイベントをつなぐ
 startBtn.addEventListener("click", startGame);
 stopBtn.addEventListener("click", stopGame);
-
-
