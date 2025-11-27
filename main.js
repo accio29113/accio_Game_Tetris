@@ -43,6 +43,9 @@ const stopBtn = document.getElementById("stop-btn");
 const leftBtn = document.getElementById("left");
 const rightBtn = document.getElementById("right");
 const downBtn = document.getElementById("down");
+const rotateBtn = document.getElementById("rotate");
+const scoreElem = document.getElementById("score");
+
 
 // 盤面データ（0: 空, 1: ブロックあり）
 let board = [];
@@ -51,6 +54,7 @@ let current = null;
 // ゲームの状態
 let intervalId = null;
 let gameRunning = false;
+let score = 0;   // ★ スコア
 
 // ===== ブロックの形たち（テトリミノ） =====
 // 1: ブロックあり, 0: 何もない
@@ -90,6 +94,14 @@ const TETROMINOS = [
     [0, 1, 1]
   ]
 ];
+
+// ===== スコア表示更新 =====
+function updateScore() {
+  if (scoreElem) {
+    scoreElem.textContent = `スコア：${score}`;
+  }
+}
+
 
 // ===== ランダムに新しいブロックを作る =====
 function createPiece() {
@@ -189,10 +201,12 @@ function merge() {
 // ===== ライン消し =====
 function clearLines() {
   let newBoard = [];
+  let cleared = 0;  // ★ 何行消したか
 
   for (let y = 0; y < ROWS; y++) {
     if (board[y].every(cell => cell === 1)) {
-      // そろった行は捨てる
+      // そろった行は捨てる（つまり消える）
+      cleared++;
     } else {
       newBoard.push(board[y]);
     }
@@ -204,7 +218,44 @@ function clearLines() {
   }
 
   board = newBoard;
+
+  // ★ スコア加算（1行100点 × 行数）
+  if (cleared > 0) {
+    score += cleared * 100;
+    updateScore();
+  }
 }
+
+// ===== ブロック回転 =====
+function rotatePiece() {
+  if (!current) return;
+
+  const oldShape = current.shape;
+  const h = oldShape.length;
+  const w = oldShape[0].length;
+
+  // 時計回りに90度回転させた新しいshapeを作る
+  const rotated = [];
+  for (let x = 0; x < w; x++) {
+    const row = [];
+    for (let y = h - 1; y >= 0; y--) {
+      row.push(oldShape[y][x]);
+    }
+    rotated.push(row);
+  }
+
+  // 一旦差し替えてみる
+  current.shape = rotated;
+
+  // もし衝突したら元に戻す
+  if (collide(current.x, current.y)) {
+    current.shape = oldShape;
+  } else {
+    draw();
+  }
+}
+
+
 
 // ===== ストップ（ポーズ） =====
 function stopGame() {
@@ -222,6 +273,8 @@ function newPiece() {
     alert("ゲームオーバー！");
     stopGame();
     initBoard();
+    score = 0;        // ★ スコアリセット
+    updateScore();    // ★ 表示も更新
     draw();
   }
 }
@@ -272,6 +325,9 @@ document.addEventListener("keydown", (e) => {
   } else if (e.key === "ArrowDown") {
     drop();
     return;
+  }else if (e.key === "ArrowUp") {
+    rotatePiece();
+    return;
   }
   draw();
 });
@@ -300,9 +356,16 @@ downBtn.addEventListener("click", () => {
   drop();
 });
 
+rotateBtn.addEventListener("click", () => {
+  if (!gameRunning || !current) return;
+  rotatePiece();
+});
+
+
 // ===== 初期化 =====
 initBoard();
 draw();
 
 startBtn.addEventListener("click", startGame);
 stopBtn.addEventListener("click", stopGame);
+
