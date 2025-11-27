@@ -1,3 +1,16 @@
+html, body {
+  touch-action: manipulation;   /* ダブルタップでズームしにくくする */
+}
+
+/* ボタンは特にズーム禁止＆長押しメニューも出さん */
+#controls button,
+#top-controls button {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  font-size: 18px;  /* ここが16pxより大きいのがポイント！ */
+}
+
 /* 全体の雰囲気 */
 body {
   font-family: "Yu Gothic", system-ui, sans-serif;
@@ -136,3 +149,4 @@ h1 {
     height: 20px;
   }
 }
+
