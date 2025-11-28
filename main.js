@@ -233,19 +233,26 @@ function newPiece() {
     showGameOver();
   }
 }
+
+// GAME OVER表示
 function showGameOver() {
   gameOverElem.classList.remove("hidden");
 }
-resetBtn.addEventListener("click", () => {
-  console.log("リセット押されたよ！"); // ← 追加
 
-  gameOverElem.classList.add("hidden");
-  initBoard();
-  score = 0;
-  updateScore();
-  draw();
-  startGame();
-});
+// 共通リセット処理（途中でもゲームオーバー後でも使える）
+function resetGame() {
+  stopGame();                              // 途中でも一旦ゲーム止める
+  gameOverElem.classList.add("hidden");    // GAME OVER 画面を隠す
+  initBoard();                             // 盤面リセット
+  score = 0;                               // スコアリセット
+  updateScore();                           // スコア表示更新
+  draw();                                  // 描画し直し
+  startGame();                             // 新しいゲーム開始
+}
+
+// GAME OVER画面の「もう一回♡」ボタン
+resetBtn.addEventListener("click", resetGame);
+
 
 
 // ===== 落下処理 =====
@@ -337,5 +344,6 @@ draw();
 
 startBtn.addEventListener("click", startGame);
 stopBtn.addEventListener("click", stopGame);
+
 
 
