@@ -237,13 +237,16 @@ function showGameOver() {
   gameOverElem.classList.remove("hidden");
 }
 resetBtn.addEventListener("click", () => {
-  gameOverElem.classList.add("hidden"); // GAME OVER画面を隠す
-  initBoard();      // 盤面リセット
-  score = 0;        // スコアリセット
-  updateScore();    // スコア表示更新
-  draw();           // 描画
-  startGame();      // ゲーム再開
+  console.log("リセット押されたよ！"); // ← 追加
+
+  gameOverElem.classList.add("hidden");
+  initBoard();
+  score = 0;
+  updateScore();
+  draw();
+  startGame();
 });
+
 
 // ===== 落下処理 =====
 function drop() {
@@ -334,4 +337,5 @@ draw();
 
 startBtn.addEventListener("click", startGame);
 stopBtn.addEventListener("click", stopGame);
+
 
