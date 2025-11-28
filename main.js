@@ -346,8 +346,8 @@ draw();
 
 startBtn.addEventListener("click", startGame);
 stopBtn.addEventListener("click", stopGame);
-
 topResetBtn.addEventListener("click", resetGame);
+
 
 
 
