@@ -12,6 +12,8 @@ const rotateBtn = document.getElementById("rotate");
 const scoreElem = document.getElementById("score");
 const gameOverElem = document.getElementById("gameOver");
 const resetBtn = document.getElementById("reset-btn");
+const topResetBtn = document.getElementById("reset-top-btn");
+
 
 
 // 盤面データ（0: 空, 1: ブロックあり）
@@ -344,6 +346,10 @@ draw();
 
 startBtn.addEventListener("click", startGame);
 stopBtn.addEventListener("click", stopGame);
+
+topResetBtn.addEventListener("click", resetGame);
+
+
 
 
 
