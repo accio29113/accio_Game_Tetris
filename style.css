@@ -13,12 +13,13 @@ html, body {
 
 /* 全体の雰囲気 */
 body {
-  font-family: "Yu Gothic", system-ui, sans-serif;
+  font-family: "Otomanopee One", "Zen Maru Gothic", sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
   background: linear-gradient(135deg, #ffe6f7, #e0f3ff);
 }
+
 
 /* 真ん中にカードっぽくまとめる */
 .wrapper {
@@ -214,6 +215,7 @@ body {
   50% { background-position: 100% 100%; }
   100% { background-position: 0% 0%; }
 }
+
 
 
 
