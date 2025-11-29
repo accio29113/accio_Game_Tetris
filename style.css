@@ -202,3 +202,17 @@ h1 {
   background: #ff94c5;
   transform: scale(1.05);
 }
+
+body {
+  animation: gradientMove 10s ease infinite;
+  background: linear-gradient(135deg, #ffe0f7, #e0f7ff, #e8ffea);
+  background-size: 300% 300%;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
