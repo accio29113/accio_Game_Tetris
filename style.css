@@ -216,6 +216,20 @@ body {
   100% { background-position: 0% 0%; }
 }
 
+/* ===== スコアカード（可愛い枠） ===== */
+.score-box {
+  display: inline-block;
+  padding: 8px 20px;
+  margin: 6px 0;
+  background: #fff0fa;
+  border: 2px solid #ffb6da;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ff4fa7;
+  box-shadow: 0 4px 12px rgba(255,182,218,0.4);
+  text-shadow: 0 1px 3px rgba(255,168,212,0.7);
+}
 
 
 
