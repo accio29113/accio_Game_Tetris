@@ -10,9 +10,11 @@ const rightBtn = document.getElementById("right");
 const downBtn = document.getElementById("down");
 const rotateBtn = document.getElementById("rotate");
 const scoreElem = document.getElementById("score");
+const highScoreElem = document.getElementById("highscore");          // ★ 追加
 const gameOverElem = document.getElementById("gameOver");
 const resetBtn = document.getElementById("reset-btn");
 const topResetBtn = document.getElementById("reset-top-btn");
+const resetHighScoreBtn = document.getElementById("reset-highscore-btn"); // ★ 追加
 
 
 
@@ -24,13 +26,38 @@ let current = null;
 let intervalId = null;
 let gameRunning = false;
 let score = 0; // スコア
+let highScore = 0;   // ★ ハイスコア
 
-// ===== スコア表示更新 =====
+// ===== ハイスコア読み込み =====
+function loadHighScore() {
+  const saved = localStorage.getItem("accioTetrisHighScore");
+  if (saved !== null) {
+    highScore = Number(saved) || 0;
+  } else {
+    highScore = 0;
+  }
+
+  if (highScoreElem) {
+    highScoreElem.textContent = `ハイスコア：${highScore}`;
+  }
+}
+
+// ===== スコア表示更新（ハイスコアも管理） =====
 function updateScore() {
   if (scoreElem) {
     scoreElem.textContent = `スコア：${score}`;
   }
+
+  // ハイスコア更新チェック
+  if (score > highScore) {
+    highScore = score;
+    if (highScoreElem) {
+      highScoreElem.textContent = `ハイスコア：${highScore}`;
+    }
+    localStorage.setItem("accioTetrisHighScore", String(highScore));
+  }
 }
+
 
 // ===== ブロックの形たち（テトリミノ） =====
 // 1: ブロックあり, 0: 何もない
@@ -353,6 +380,15 @@ draw();
 startBtn.addEventListener("click", startGame);
 stopBtn.addEventListener("click", stopGame);
 topResetBtn.addEventListener("click", resetGame);
+resetBtn.addEventListener("click", resetGame);
+resetHighScoreBtn.addEventListener("click", () => {
+  highScore = 0;
+  localStorage.removeItem("accioTetrisHighScore");
+  if (highScoreElem) {
+    highScoreElem.textContent = "ハイスコア：0";
+  }
+});
+
 
 
 
