@@ -288,27 +288,33 @@ function startGame() {
 
 // ===== キーボード操作 =====
 document.addEventListener("keydown", (e) => {
+  // 矢印キーのスクロールを完全無効化
+  if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
+    e.preventDefault();
+  }
+
   if (!gameRunning || !current) return;
 
   if (e.key === "ArrowLeft") {
     const nx = current.x - 1;
-    if (!collide(nx, current.y)) {
-      current.x = nx;
-    }
+    if (!collide(nx, current.y)) current.x = nx;
+
   } else if (e.key === "ArrowRight") {
     const nx = current.x + 1;
-    if (!collide(nx, current.y)) {
-      current.x = nx;
-    }
+    if (!collide(nx, current.y)) current.x = nx;
+
   } else if (e.key === "ArrowDown") {
     drop();
     return;
+
   } else if (e.key === "ArrowUp") {
     rotatePiece();
     return;
   }
+
   draw();
 });
+
 
 // ===== スマホ用ボタン操作 =====
 leftBtn.addEventListener("click", () => {
@@ -347,6 +353,7 @@ draw();
 startBtn.addEventListener("click", startGame);
 stopBtn.addEventListener("click", stopGame);
 topResetBtn.addEventListener("click", resetGame);
+
 
 
 
