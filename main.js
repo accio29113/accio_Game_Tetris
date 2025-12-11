@@ -191,6 +191,8 @@ function merge() {
       }
     }
   }
+  // ★ ここが大事：盤面に固定したら current は消す
+  current = null;
 }
 // ===== そろった行を探す =====
 function findFullLines() {
@@ -526,6 +528,7 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
+
 
 
 
