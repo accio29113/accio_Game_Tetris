@@ -192,31 +192,111 @@ function merge() {
     }
   }
 }
-
-// ===== ライン消し =====
-function clearLines() {
-  let newBoard = [];
-  let cleared = 0;
-
+// ===== そろった行を探す =====
+function findFullLines() {
+  const fullLines = [];
   for (let y = 0; y < ROWS; y++) {
     if (board[y].every(cell => cell === 1)) {
-      cleared++;
-    } else {
+      fullLines.push(y);
+    }
+  }
+  return fullLines;
+}
+// ===== そろった行を光らせる（見た目演出） =====
+function highlightLines(lines) {
+  // まず通常描画
+  draw();
+
+  const cells = boardElem.children;
+  lines.forEach((y) => {
+    for (let x = 0; x < COLS; x++) {
+      const index = y * COLS + x;
+      if (cells[index]) {
+        cells[index].classList.add("line-clear");
+      }
+    }
+  });
+}
+
+// ===== 行を実際に消して、スコアも加算 =====
+function clearLinesNow(lines) {
+  if (!lines.length) return;
+
+  const removeSet = new Set(lines);
+  let newBoard = [];
+
+  for (let y = 0; y < ROWS; y++) {
+    if (!removeSet.has(y)) {
       newBoard.push(board[y]);
     }
   }
 
+  const cleared = lines.length;
+
+  // 上に空の行を足して、全体の行数を保つ
   while (newBoard.length < ROWS) {
-    const empty = new Array(COLS).fill(0);
-    newBoard.unshift(empty);
+    newBoard.unshift(new Array(COLS).fill(0));
   }
 
   board = newBoard;
 
-  if (cleared > 0) {
-    score += cleared * 100;
-    updateScore();
+  // スコア更新
+  score += cleared * 100;
+  updateScore();
+}
+// ===== 1ステップだけ重力をかける（1マスだけ落とす） =====
+function applyGravityStep() {
+  let moved = false;
+
+  // 下の行から順に見ていく（下から詰める）
+  for (let y = ROWS - 2; y >= 0; y--) {
+    for (let x = 0; x < COLS; x++) {
+      if (board[y][x] === 1 && board[y + 1][x] === 0) {
+        board[y + 1][x] = 1;
+        board[y][x] = 0;
+        moved = true;
+      }
+    }
   }
+
+  return moved;
+}
+// ===== アニメ付きで重力を最後までかける =====
+function applyGravityAnimated(callback) {
+  function step() {
+    const moved = applyGravityStep();
+    draw(); // 1ステップごとに再描画
+
+    if (moved) {
+      // ★ この 80 を大きくするとゆっくり、小さくすると速くなる
+      setTimeout(step, 80);
+    } else {
+      // もう動かなくなったら完了
+      if (callback) callback();
+    }
+  }
+
+  step();
+}
+// ===== ライン消し＋重力をアニメ付きでやる =====
+function clearLinesAnimated(lines, afterAll) {
+  if (!lines.length) {
+    if (afterAll) afterAll();
+    return;
+  }
+
+  // ① まず光らせる
+  highlightLines(lines);
+
+  // ② 少し待ってから本当に消す
+  setTimeout(() => {
+    clearLinesNow(lines);
+
+    // ③ さらに重力アニメーション
+    applyGravityAnimated(() => {
+      if (afterAll) afterAll();
+    });
+  }, 300); // ← 光ってから消えるまでの時間（お好みで調整OK）
 }
 
 // ===== 縦方向の重力（ぷよぷよ風） =====
@@ -310,30 +390,42 @@ resetBtn.addEventListener("click", resetGame);
 
 
 
-// ===== 落下処理 =====
 function drop() {
   if (!current) {
     newPiece();
   }
 
   const ny = current.y + 1;
+
   if (!collide(current.x, ny)) {
+    // 普通に1マス落下
     current.y = ny;
+    draw();
   } else {
-    // ここでブロックを盤面に固定
+    // ぶつかったので盤面に固定
     merge();
 
-    // ライン消し
-    clearLines();
+    // そろった行があるかチェック
+    const fullLines = findFullLines();
 
-    // ★ 縦重力をかける（ぷよぷよ風）
-    applyGravity();
+    if (fullLines.length > 0) {
+      // アニメ中は自動落下を止める
+      stopGame();
 
-    // 次のブロック投入
-    newPiece();
+      clearLinesAnimated(fullLines, () => {
+        // ライン消し＋重力アニメが終わったら、新しいブロック
+        newPiece();
+        draw();
+        startGame(); // 自動落下再開
+      });
+    } else {
+      // ライン消しなし→普通に次のブロック
+      newPiece();
+      draw();
+    }
   }
-  draw();
 }
+
 
 
 // ===== スタート（再開） =====
@@ -423,6 +515,7 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
+
 
 
 
