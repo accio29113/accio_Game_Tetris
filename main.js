@@ -269,7 +269,7 @@ function applyGravityAnimated(callback) {
 
     if (moved) {
       // ★ この 80 を大きくするとゆっくり、小さくすると速くなる
-      setTimeout(step, 80);
+      setTimeout(step, 150);
     } else {
       // もう動かなくなったら完了
       if (callback) callback();
@@ -296,7 +296,7 @@ function clearLinesAnimated(lines, afterAll) {
     applyGravityAnimated(() => {
       if (afterAll) afterAll();
     });
-  }, 300); // ← 光ってから消えるまでの時間（お好みで調整OK）
+  }, 400); // ← 光ってから消えるまでの時間（お好みで調整OK）
 }
 // ===== 連鎖処理：揃った行がある限り、消す→落とすを繰り返す =====
 function handleLineClears(afterAll) {
@@ -427,9 +427,11 @@ function drop() {
     // ★ 揃った行がある限り、光る→消える→落ちるを連鎖させる
     handleLineClears(() => {
       // もう揃った行がなくなった → 次のブロックを出す
+      applyGravityAnimated(() => {
       newPiece();
       draw();
       startGame();  // 自動落下再開
+        });
     });
   }
 }
@@ -524,6 +526,7 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
+
 
 
 
