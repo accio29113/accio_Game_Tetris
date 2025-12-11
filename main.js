@@ -219,6 +219,32 @@ function clearLines() {
   }
 }
 
+// ===== 縦方向の重力（ぷよぷよ風） =====
+// 各列ごとに、ブロックを下にぎゅっと詰める
+function applyGravity() {
+  for (let x = 0; x < COLS; x++) {
+    const stack = [];
+
+    // 上から下まで見て、「ブロックのある行」だけを集める
+    for (let y = 0; y < ROWS; y++) {
+      if (board[y][x] === 1) {
+        stack.push(1);
+      }
+    }
+
+    // 下から順番にブロックを詰めていく
+    for (let y = ROWS - 1; y >= 0; y--) {
+      if (stack.length > 0) {
+        board[y][x] = 1;
+        stack.pop();
+      } else {
+        board[y][x] = 0;
+      }
+    }
+  }
+}
+
+
 // ===== ブロック回転 =====
 function rotatePiece() {
   if (!current) return;
@@ -294,12 +320,21 @@ function drop() {
   if (!collide(current.x, ny)) {
     current.y = ny;
   } else {
+    // ここでブロックを盤面に固定
     merge();
+
+    // ライン消し
     clearLines();
+
+    // ★ 縦重力をかける（ぷよぷよ風）
+    applyGravity();
+
+    // 次のブロック投入
     newPiece();
   }
   draw();
 }
+
 
 // ===== スタート（再開） =====
 function startGame() {
@@ -388,6 +423,7 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
+
 
 
 
