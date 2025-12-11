@@ -220,6 +220,7 @@ function highlightLines(lines) {
   });
 }
 
+
 // ===== 行を実際に消して、スコアも加算 =====
 function clearLinesNow(lines) {
   if (!lines.length) return;
@@ -316,6 +317,8 @@ function handleLineClears(afterAll) {
     handleLineClears(afterAll);
   });
 }
+
+
 
 // ===== 縦方向の重力（ぷよぷよ風） =====
 // 各列ごとに、ブロックを下にぎゅっと詰める
@@ -433,11 +436,10 @@ function drop() {
       newPiece();
       draw();
       startGame();  // 自動落下再開
-        });
+      });
     });
   }
 }
-
 
 
 
@@ -528,17 +530,3 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
