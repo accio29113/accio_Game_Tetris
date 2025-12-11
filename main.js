@@ -298,6 +298,22 @@ function clearLinesAnimated(lines, afterAll) {
     });
   }, 300); // ← 光ってから消えるまでの時間（お好みで調整OK）
 }
+// ===== 連鎖処理：揃った行がある限り、消す→落とすを繰り返す =====
+function handleLineClears(afterAll) {
+  const lines = findFullLines();  // 今の盤面で揃っている行を探す
+
+  if (lines.length === 0) {
+    // もう消す行がない → 連鎖おわり
+    if (afterAll) afterAll();
+    return;
+  }
+
+  // ラインがある間は、
+  // 光る → 消える → 重力アニメ → 終わったらもう一回チェック
+  clearLinesAnimated(lines, () => {
+    handleLineClears(afterAll);
+  });
+}
 
 // ===== 縦方向の重力（ぷよぷよ風） =====
 // 各列ごとに、ブロックを下にぎゅっと詰める
@@ -405,26 +421,19 @@ function drop() {
     // ぶつかったので盤面に固定
     merge();
 
-    // そろった行があるかチェック
-    const fullLines = findFullLines();
+    // ライン消し＆重力アニメの間は自動落下止める
+    stopGame();
 
-    if (fullLines.length > 0) {
-      // アニメ中は自動落下を止める
-      stopGame();
-
-      clearLinesAnimated(fullLines, () => {
-        // ライン消し＋重力アニメが終わったら、新しいブロック
-        newPiece();
-        draw();
-        startGame(); // 自動落下再開
-      });
-    } else {
-      // ライン消しなし→普通に次のブロック
+    // ★ 揃った行がある限り、光る→消える→落ちるを連鎖させる
+    handleLineClears(() => {
+      // もう揃った行がなくなった → 次のブロックを出す
       newPiece();
       draw();
-    }
+      startGame();  // 自動落下再開
+    });
   }
 }
+
 
 
 
@@ -515,6 +524,7 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
+
 
 
 
