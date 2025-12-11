@@ -269,7 +269,7 @@ function applyGravityAnimated(callback) {
 
     if (moved) {
       // ★ この 80 を大きくするとゆっくり、小さくすると速くなる
-      setTimeout(step, 150);
+      setTimeout(step, 200);
     } else {
       // もう動かなくなったら完了
       if (callback) callback();
@@ -526,6 +526,7 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
+
 
 
 
