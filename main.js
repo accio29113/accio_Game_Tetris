@@ -16,6 +16,24 @@ const resetBtn = document.getElementById("reset-btn");
 const topResetBtn = document.getElementById("reset-top-btn");
 const resetHighScoreBtn = document.getElementById("reset-highscore-btn"); // ★ 追加
 
+// ===== SE（効果音） =====
+const seStart = new Audio("sounds/start.mp3");
+const seDrop = new Audio("sounds/drop.mp3");
+const seClear = new Audio("sounds/clear.mp3");
+const seRotate = new Audio("sounds/rotate.mp3");
+const seGameOver = new Audio("sounds/gameover.mp3");
+
+startBtn.addEventListener("click", () => {
+  playSE(seStart);   // ← ★最初の1回は必ずボタン内で鳴らす
+  startGame();
+});
+function playSE(se) {
+  se.currentTime = 0;
+  se.play().catch(() => {});
+}
+
+
+
 
 
 // 盤面データ（0: 空, 1: ブロックあり）
@@ -236,14 +254,15 @@ function clearLinesNow(lines) {
 
   const cleared = lines.length;
 
-  // 上に空の行を足して、全体の行数を保つ
+  // ★ ここ！ ライン消去音
+  playSE(seClear);
+
   while (newBoard.length < ROWS) {
     newBoard.unshift(new Array(COLS).fill(0));
   }
 
   board = newBoard;
 
-  // スコア更新
   score += cleared * 100;
   updateScore();
 }
@@ -340,6 +359,7 @@ function rotatePiece() {
   if (collide(current.x, current.y)) {
     current.shape = oldShape;
   } else {
+    playSE(seRotate);
     draw();
   }
 }
@@ -364,6 +384,7 @@ function newPiece() {
 
 // GAME OVER表示
 function showGameOver() {
+  playSE(seGameOver);
   gameOverElem.classList.remove("hidden");
 }
 
@@ -502,4 +523,5 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
+
 
