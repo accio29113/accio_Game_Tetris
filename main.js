@@ -37,7 +37,6 @@ function playSE(se) {
 
 
 
-
 // 盤面データ（0: 空, 1: ブロックあり）
 let board = [];
 // 今落ちているブロック
@@ -269,6 +268,7 @@ function clearLinesNow(lines) {
   updateScore();
 }
 
+
 // ===== 重力なし（互換用ダミー関数） =====
 function applyGravityAnimated(callback) {
   if (callback) callback();
@@ -361,7 +361,7 @@ function rotatePiece() {
   if (collide(current.x, current.y)) {
     current.shape = oldShape;
   } else {
-    playSE(seRotate);
+    playSE(seRotate);  
     draw();
   }
 }
@@ -529,6 +529,3 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
-
-
-
