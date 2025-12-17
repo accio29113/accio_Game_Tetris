@@ -247,40 +247,12 @@ function clearLinesNow(lines) {
   score += cleared * 100;
   updateScore();
 }
-// ===== 1ステップだけ重力をかける（1マスだけ落とす） =====
-function applyGravityStep() {
-  let moved = false;
 
-  // 下の行から順に見ていく（下から詰める）
-  for (let y = ROWS - 2; y >= 0; y--) {
-    for (let x = 0; x < COLS; x++) {
-      if (board[y][x] === 1 && board[y + 1][x] === 0) {
-        board[y + 1][x] = 1;
-        board[y][x] = 0;
-        moved = true;
-      }
-    }
-  }
-
-  return moved;
-}
-// ===== アニメ付きで重力を最後までかける =====
+// ===== 重力なし（互換用ダミー関数） =====
 function applyGravityAnimated(callback) {
-  function step() {
-    const moved = applyGravityStep();
-    draw(); // 1ステップごとに再描画
-
-    if (moved) {
-      // ★ この 80 を大きくするとゆっくり、小さくすると速くなる
-      setTimeout(step, 200);
-    } else {
-      // もう動かなくなったら完了
-      if (callback) callback();
-    }
-  }
-
-  step();
+  if (callback) callback();
 }
+
 // ===== ライン消し＋重力をアニメ付きでやる =====
 function clearLinesAnimated(lines, afterAll) {
   if (!lines.length) {
@@ -530,3 +502,4 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
+
