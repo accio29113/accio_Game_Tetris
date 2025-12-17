@@ -23,6 +23,8 @@ const seClear = new Audio("sounds/clear.mp3");
 const seRotate = new Audio("sounds/rotate.mp3");
 const seGameOver = new Audio("sounds/gameover.mp3");
 
+let gameOverPlayed = false;
+
 startBtn.addEventListener("click", () => {
   playSE(seStart);   // ← ★最初の1回は必ずボタン内で鳴らす
   startGame();
@@ -384,9 +386,13 @@ function newPiece() {
 
 // GAME OVER表示
 function showGameOver() {
-  playSE(seGameOver);
+  if (!gameOverPlayed) {
+    playSE(seGameOver);   // ★ 最初の1回だけ
+    gameOverPlayed = true;
+  }
   gameOverElem.classList.remove("hidden");
 }
+
 
 // 共通リセット処理（途中でもゲームオーバー後でも使える）
 function resetGame() {
@@ -523,5 +529,6 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
+
 
 
