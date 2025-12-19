@@ -399,9 +399,11 @@ function resetGame() {
   stopGame();                              // 途中でも一旦ゲーム止める
   gameOverElem.classList.add("hidden");    // GAME OVER 画面を隠す
   initBoard();                             // 盤面リセット
+  current=null;
   score = 0;                               // スコアリセット
   updateScore();                           // スコア表示更新
   draw();                                  // 描画し直し
+  gameOverPlayed=false;
   startGame();                             // 新しいゲーム開始
 }
 
@@ -529,3 +531,4 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
+
