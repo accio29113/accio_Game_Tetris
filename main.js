@@ -15,9 +15,6 @@ const gameOverElem = document.getElementById("gameOver");
 const resetBtn = document.getElementById("reset-btn");
 const topResetBtn = document.getElementById("reset-top-btn");
 const resetHighScoreBtn = document.getElementById("reset-highscore-btn"); // ★ 追加
-const volumeSlider = document.getElementById("volume");
-const volumeValue = document.getElementById("volume-value");
-const bgmToggleBtn = document.getElementById("bgm-toggle");
 
 // ===== SE（効果音） =====
 const seStart = new Audio("sounds/start.mp3");
@@ -41,43 +38,6 @@ function playSE(se, base = 1.0) {
   sound.volume = Math.max(0, Math.min(1, masterVolume * base));
   sound.play().catch(() => {});
 }
-
-// ===== マスター音量（0.0〜1.0）=====
-let masterVolume = 0.5;
-
-// localStorageから復元（あれば）
-const savedVol = localStorage.getItem("accio_volume");
-if (savedVol !== null) masterVolume = Number(savedVol);
-
-let bgmOn = false;
-const savedBgm = localStorage.getItem("accio_bgm_on");
-if (savedBgm !== null) bgmOn = savedBgm === "1";
-
-// ===== BGM =====
-const bgm = new Audio("sounds/bgm.mp3");
-bgm.loop = true;
-bgm.volume = masterVolume * 0.35; // BGMは控えめ
-// ===== 音量スライダー制御 =====
-function syncVolumeUI() {
-  if (!volumeSlider) return;
-  const v = Math.round(masterVolume * 100);
-  volumeSlider.value = String(v);
-  volumeValue.textContent = String(v);
-  bgm.volume = masterVolume * 0.35;
-}
-
-if (volumeSlider) {
-  syncVolumeUI();
-
-  volumeSlider.addEventListener("input", () => {
-    masterVolume = Number(volumeSlider.value) / 100;
-    localStorage.setItem("accio_volume", String(masterVolume));
-    syncVolumeUI();
-  });
-}
-
-
-
 
 
 // 盤面データ（0: 空, 1: ブロックあり）
