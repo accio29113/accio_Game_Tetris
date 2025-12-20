@@ -372,7 +372,7 @@ function rotatePiece() {
 // ===== ストップ（ポーズ） =====
 function stopGame() {
   if (!gameRunning) return;
-  playSE(seStop);
+  
   clearInterval(intervalId);
   intervalId = null;
   gameRunning = false;
@@ -526,7 +526,11 @@ updateScore();
 draw();
 
 startBtn.addEventListener("click", startGame);
-stopBtn.addEventListener("click", stopGame);
+stopBtn.addEventListener("click", () => {
+  playSE(seStop);
+  stopGame();
+});
+
 topResetBtn.addEventListener("click", resetGame);
 resetBtn.addEventListener("click", resetGame);
 resetHighScoreBtn.addEventListener("click", () => {
@@ -536,5 +540,3 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
-
-
