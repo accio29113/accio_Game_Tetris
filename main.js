@@ -22,6 +22,9 @@ const seDrop = new Audio("sounds/drop.mp3");
 const seClear = new Audio("sounds/clear.mp3");
 const seRotate = new Audio("sounds/rotate.mp3");
 const seGameOver = new Audio("sounds/gameover.mp3");
+const seStop = new Audio("sounds/stop.mp3");
+const seReset = new Audio("sounds/reset.mp3");
+
 
 let gameOverPlayed = false;
 
@@ -369,6 +372,7 @@ function rotatePiece() {
 // ===== ストップ（ポーズ） =====
 function stopGame() {
   if (!gameRunning) return;
+  playSE(seStop);
   clearInterval(intervalId);
   intervalId = null;
   gameRunning = false;
@@ -396,6 +400,7 @@ function showGameOver() {
 
 // 共通リセット処理（途中でもゲームオーバー後でも使える）
 function resetGame() {
+  playSE(seReset);
   stopGame();                              // 途中でも一旦ゲーム止める
   gameOverElem.classList.add("hidden");    // GAME OVER 画面を隠す
   initBoard();                             // 盤面リセット
@@ -531,4 +536,5 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
+
 
