@@ -32,13 +32,11 @@ startBtn.addEventListener("click", () => {
   playSE(seStart);   // ← ★最初の1回は必ずボタン内で鳴らす
   startGame();
 });
-
-function playSE(se, base = 1.0) {
+function playSE(se) {
   const sound = se.cloneNode();
-  sound.volume = Math.max(0, Math.min(1, masterVolume * base));
+  sound.volume = se.volume;
   sound.play().catch(() => {});
 }
-
 
 // 盤面データ（0: 空, 1: ブロックあり）
 let board = [];
@@ -372,7 +370,6 @@ function rotatePiece() {
 // ===== ストップ（ポーズ） =====
 function stopGame() {
   if (!gameRunning) return;
-  
   clearInterval(intervalId);
   intervalId = null;
   gameRunning = false;
@@ -404,11 +401,11 @@ function resetGame() {
   stopGame();                              // 途中でも一旦ゲーム止める
   gameOverElem.classList.add("hidden");    // GAME OVER 画面を隠す
   initBoard();                             // 盤面リセット
-  current=null;
+  current = null;        // 念のため
   score = 0;                               // スコアリセット
   updateScore();                           // スコア表示更新
   draw();                                  // 描画し直し
-  gameOverPlayed=false;
+  gameOverPlayed = false;
   startGame();                             // 新しいゲーム開始
 }
 
@@ -525,12 +522,11 @@ initBoard();
 updateScore();
 draw();
 
-startBtn.addEventListener("click", startGame);
+
 stopBtn.addEventListener("click", () => {
-  playSE(seStop);
+  playSE(seStop);   // ★ここでだけ鳴らす
   stopGame();
 });
-
 topResetBtn.addEventListener("click", resetGame);
 resetBtn.addEventListener("click", resetGame);
 resetHighScoreBtn.addEventListener("click", () => {
