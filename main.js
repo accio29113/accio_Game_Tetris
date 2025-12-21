@@ -37,14 +37,10 @@ function playSE(se, base = 1.0) {
 let gameOverPlayed = false;
 
 startBtn.addEventListener("click", () => {
-  playSE(seStart);   // ← ★最初の1回は必ずボタン内で鳴らす
+  playSE(seStart);
   startGame();
 });
-function playSE(se) {
-  const sound = se.cloneNode();
-  sound.volume = se.volume;
-  sound.play().catch(() => {});
-}
+
 
 // 盤面データ（0: 空, 1: ブロックあり）
 let board = [];
@@ -544,4 +540,5 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
+
 
