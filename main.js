@@ -25,6 +25,14 @@ const seGameOver = new Audio("sounds/gameover.mp3");
 const seStop = new Audio("sounds/stop.mp3");
 const seReset = new Audio("sounds/reset.mp3");
 
+let masterVolume = 0.5; // とりあえず固定でOK（あとでスライダー戻せる）
+
+function playSE(se, base = 1.0) {
+  const sound = se.cloneNode();
+  sound.volume = Math.max(0, Math.min(1, masterVolume * base));
+  sound.play().catch(() => {});
+}
+
 
 let gameOverPlayed = false;
 
@@ -536,3 +544,4 @@ resetHighScoreBtn.addEventListener("click", () => {
     highScoreElem.textContent = "ハイスコア：0";
   }
 });
+
